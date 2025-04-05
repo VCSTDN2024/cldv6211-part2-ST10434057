@@ -1,0 +1,13 @@
+﻿namespace WebAppPart1ST10434057.Views.Bookings
+@model WebAppPart1ST10434057.Models.Booking
+
+<h2>Delete Booking</h2>
+
+<p><strong>Customer:</strong> @Model.CustomerName</p>
+<p><strong>Event:</strong> @Model.Event?.EventName</p>
+<p><strong>Booking Date:</strong> @Model.BookingDate.ToShortDateString()</p>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="BookingID" />
+    <button type="submit">Delete</button>
+</form>

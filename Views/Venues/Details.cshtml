@@ -1,0 +1,11 @@
+﻿namespace WebAppPart1ST10434057.Views.Venues
+@model WebAppPart1ST10434057.Models.Venue
+
+<h2>Venue Details</h2>
+
+<p><strong>Name:</strong> @Model.VenueName</p>
+<p><strong>Location:</strong> @Model.Location</p>
+<p><strong>Capacity:</strong> @Model.Capacity</p>
+<p><img src="@Model.ImageUrl" width="300" /></p>
+
+<a asp-action="Index">Back to List</a>

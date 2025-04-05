@@ -1,0 +1,29 @@
+﻿namespace WebAppPart1ST10434057.Views.Events
+@model WebAppPart1ST10434057.Models.Event
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+<h2>Create Event</h2>
+
+<form asp-action="EventsCreate">
+    <div>
+        <label asp-for="EventName"></label>
+        <input asp-for="EventName" />
+    </div>
+    <div>
+        <label asp-for="StartDate"></label>
+        <input asp-for="StartDate" type="date" />
+    </div>
+    <div>
+        <label asp-for="EndDate"></label>
+        <input asp-for="EndDate" type="date" />
+    </div>
+    <div>
+        <label asp-for="VenueID">Venue</label>
+        <select asp-for="VenueID" asp-items="ViewBag.VenueList"></select>
+    </div>
+    <div>
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" />
+    </div>
+    <button type="submit">Save</button>
+</form>

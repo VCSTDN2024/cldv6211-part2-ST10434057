@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1 class="mb-4">EventEase Admin Dashboard</h1>
+
+<div class="row">
+    <!-- Venues -->
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Manage Venues</h5>
+                <p class="card-text">View, create, or edit venue information.</p>
+                <a href="/Venues" class="btn btn-primary mb-2">View All Venues</a>
+                <a href="/Venues/Create" class="btn btn-outline-primary">Add New Venue</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events -->
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Manage Events</h5>
+                <p class="card-text">Organize and update your upcoming events.</p>
+                <a href="/Events" class="btn btn-success mb-2">View All Events</a>
+                <a href="/Events/Create" class="btn btn-outline-success">Add New Event</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bookings -->
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Manage Bookings</h5>
+                <p class="card-text">Track, assign, and prevent double-bookings.</p>
+                <a href="/Bookings" class="btn btn-danger mb-2">View All Bookings</a>
+                <a href="/Bookings/Create" class="btn btn-outline-danger">Add New Booking</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿namespace WebAppPart1ST10434057.Views.Venues
+@model WebAppPart1ST10434057.Models.Venue
+
+<h2>Delete Venue</h2>
+
+<div>
+    <h4>Are you sure you want to delete this venue?</h4>
+    <p>Name: @Model.VenueName</p>
+    <p>Location: @Model.Location</p>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="VenueID" />
+        <button type="submit">Delete</button>
+    </form>
+</div>
+
+<a asp-action="Index">Back to List</a>

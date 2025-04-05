@@ -1,0 +1,38 @@
+﻿namespace WebAppPart1ST10434057.Views.Events
+@model IEnumerable<WebAppPart1ST10434057.Models.Event>
+
+@{
+    ViewData["Title"] = "Events";
+}
+<h2>All Events</h2>
+<a asp-action="Create">Add New Event</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Event Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Venue</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ev in Model)
+        {
+            <tr>
+                <td>@ev.EventName</td>
+                <td>@ev.StartDate.ToShortDateString()</td>
+                <td>@ev.EndDate.ToShortDateString()</td>
+                <td>@ev.Venue?.VenueName</td>
+                <td><img src="@ev.ImageUrl" width="100" /></td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@ev.EventID">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@ev.EventID">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@ev.EventID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

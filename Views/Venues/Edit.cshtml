@@ -1,0 +1,27 @@
+﻿namespace WebAppPart1ST10434057.Views.Venues
+@model WebAppPart1ST10434057.Models.Venue
+
+<h2>Edit Venue</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="VenueID" />
+    <div>
+        <label asp-for="VenueName"></label>
+        <input asp-for="VenueName" />
+    </div>
+    <div>
+        <label asp-for="Location"></label>
+        <input asp-for="Location" />
+    </div>
+    <div>
+        <label asp-for="Capacity"></label>
+        <input asp-for="Capacity" />
+    </div>
+    <div>
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" />
+    </div>
+    <button type="submit">Update</button>
+</form>
+
+<a asp-action="Index">Back to List</a>

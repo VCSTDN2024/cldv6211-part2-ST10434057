@@ -1,0 +1,25 @@
+﻿namespace WebAppPart1ST10434057.Views.Bookings
+@model WebAppPart1ST10434057.Models.Booking
+
+<h2>Edit Booking</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="BookingID" />
+    <div>
+        <label asp-for="CustomerName"></label>
+        <input asp-for="CustomerName" />
+    </div>
+    <div>
+        <label asp-for="ContactDetails"></label>
+        <input asp-for="ContactDetails" />
+    </div>
+    <div>
+        <label asp-for="BookingDate"></label>
+        <input asp-for="BookingDate" type="date" />
+    </div>
+    <div>
+        <label asp-for="EventID">Event</label>
+        <select asp-for="EventID" asp-items="ViewBag.EventList"></select>
+    </div>
+    <button type="submit">Update</button>
+</form>

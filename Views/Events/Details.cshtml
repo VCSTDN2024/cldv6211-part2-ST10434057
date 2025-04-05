@@ -1,0 +1,10 @@
+﻿namespace WebAppPart1ST10434057.Views.Events  
+@model WebAppPart1ST10434057.Models.Event  
+
+<h2>Event Details</h2>  
+
+<p><strong>Name:</strong> @Model.EventName</p>  
+<p><strong>Start:</strong> @Model.StartDate.ToShortDateString()</p>  
+<p><strong>End:</strong> @Model.EndDate.ToShortDateString()</p>  
+<p><strong>Venue:</strong> @Model.Venue?.VenueName</p>  
+<p><img src="@Model.ImageUrl" width="300" /></p>

@@ -1,0 +1,9 @@
+﻿namespace WebAppPart1ST10434057.Views.Bookings
+@model WebAppPart1ST10434057.Models.Booking
+
+<h2>Booking Details</h2>
+
+<p><strong>Customer Name:</strong> @Model.CustomerName</p>
+<p><strong>Contact:</strong> @Model.ContactDetails</p>
+<p><strong>Booking Date:</strong> @Model.BookingDate.ToShortDateString()</p>
+<p><strong>Event:</strong> @Model.Event?.EventName</p>
