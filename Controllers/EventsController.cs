@@ -43,9 +43,16 @@ namespace WebAppPart1ST10434057.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ev);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(ev);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save the event. Please try again later.");
+                }
             }
             ViewData["VenueID"] = new SelectList(_context.Venues, "VenueID", "Name", ev.VenueID);
             return View(ev);
@@ -70,9 +77,23 @@ namespace WebAppPart1ST10434057.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Update(ev);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Update(ev);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!EventExists(ev.EventID))
+                        return NotFound();
+                    else
+                        ModelState.AddModelError("", "This event was updated by another user. Please reload and try again.");
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "An error occurred while updating the event. Please try again later.");
+                }
             }
             ViewData["VenueID"] = new SelectList(_context.Venues, "VenueID", "Name", ev.VenueID);
             return View(ev);
@@ -92,13 +113,27 @@ namespace WebAppPart1ST10434057.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ev = await _context.Events.FindAsync(id);
-            _context.Events.Remove(ev);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var ev = await _context.Events.FindAsync(id);
+                _context.Events.Remove(ev);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to delete this event. It may be linked to bookings or other data.");
+                return RedirectToAction(nameof(Delete), new { id });
+            }
+        }
+
+        private bool EventExists(int id)
+        {
+            return _context.Events.Any(e => e.EventID == id);
         }
     }
 }
+
 // The EventsController handles all user interactions related to event management in the EventEase application. 
 // It provides functionality for creating, viewing, editing, and deleting events. Each event is associated with a venue, 
 // and the controller interacts with the database to perform CRUD operations on the Events and Venues tables. 

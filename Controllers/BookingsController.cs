@@ -16,10 +16,20 @@ namespace WebAppPart1ST10434057.Controllers
         }
 
         // GET: Bookings
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var bookings = await _context.Bookings.Include(b => b.Event).ThenInclude(e => e.Venue).ToListAsync();
-            return View(bookings);
+            var bookings = _context.Bookings
+                .Include(b => b.Event)
+                .ThenInclude(e => e.Venue)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                bookings = bookings.Where(b => b.CustomerName.Contains(searchString) ||
+                                               b.Event.EventName.Contains(searchString));
+            }
+
+            return View(await bookings.ToListAsync());
         }
 
         // GET: Bookings/Details/5
@@ -27,7 +37,11 @@ namespace WebAppPart1ST10434057.Controllers
         {
             if (id == null) return NotFound();
 
-            var booking = await _context.Bookings.Include(b => b.Event).ThenInclude(e => e.Venue).FirstOrDefaultAsync(m => m.BookingID == id);
+            var booking = await _context.Bookings
+                .Include(b => b.Event)
+                .ThenInclude(e => e.Venue)
+                .FirstOrDefaultAsync(m => m.BookingID == id);
+
             if (booking == null) return NotFound();
 
             return View(booking);
@@ -47,10 +61,18 @@ namespace WebAppPart1ST10434057.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(booking);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(booking);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save booking. Try again later.");
+                }
             }
+
             ViewData["EventID"] = new SelectList(_context.Events, "EventID", "Name", booking.EventID);
             return View(booking);
         }
@@ -76,10 +98,25 @@ namespace WebAppPart1ST10434057.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Update(booking);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Update(booking);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!BookingExists(booking.BookingID))
+                        return NotFound();
+                    else
+                        ModelState.AddModelError("", "Another user has modified this booking. Please reload and try again.");
+                }
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again later.");
+                }
             }
+
             ViewData["EventID"] = new SelectList(_context.Events, "EventID", "Name", booking.EventID);
             return View(booking);
         }
@@ -89,7 +126,11 @@ namespace WebAppPart1ST10434057.Controllers
         {
             if (id == null) return NotFound();
 
-            var booking = await _context.Bookings.Include(b => b.Event).ThenInclude(e => e.Venue).FirstOrDefaultAsync(m => m.BookingID == id);
+            var booking = await _context.Bookings
+                .Include(b => b.Event)
+                .ThenInclude(e => e.Venue)
+                .FirstOrDefaultAsync(m => m.BookingID == id);
+
             if (booking == null) return NotFound();
 
             return View(booking);
@@ -100,16 +141,28 @@ namespace WebAppPart1ST10434057.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var booking = await _context.Bookings.FindAsync(id);
-            _context.Bookings.Remove(booking);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var booking = await _context.Bookings.FindAsync(id);
+                _context.Bookings.Remove(booking);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to delete this booking. It may be related to other data.");
+                return RedirectToAction(nameof(Delete), new { id });
+            }
+        }
 
-
-
+        // Helper method for Edit concurrency check
+        private bool BookingExists(int id)
+        {
+            return _context.Bookings.Any(e => e.BookingID == id);
         }
     }
-}// The BookingsController is responsible for managing the booking process within the EventEase application. 
+}
+// The BookingsController is responsible for managing the booking process within the EventEase application. 
 // It allows users to perform CRUD (Create, Read, Update, Delete) operations on bookings, which are associated with specific events and venues. 
 // The controller interacts with the AppDbContext to retrieve and manipulate booking data in the database. 
 // It provides functionality to view a list of all bookings, view detailed information about a specific booking, 

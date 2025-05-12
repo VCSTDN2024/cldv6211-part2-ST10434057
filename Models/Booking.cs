@@ -20,6 +20,11 @@ namespace WebAppPart1ST10434057.Models
         [ForeignKey("Event")]
         public int EventID { get; set; }
 
-        public virtual Event Event { get; set; } // Navigation property with lazy loading
+        public virtual Event Event { get; set; }
+
+        [ForeignKey("Venue")]
+        public int VenueID { get; set; }
+
+        public virtual Venue Venue { get; set; }
     }
 }

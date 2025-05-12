@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebAppPart1ST10434057.Data;
 using System;
+using WebAppPart1ST10434057.Services;
 
 namespace WebAppPart1ST10434057
 {
@@ -13,6 +14,8 @@ namespace WebAppPart1ST10434057
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddSingleton<AzureBlobService>(); //part 2 for blob service
 
             var app = builder.Build();
 
